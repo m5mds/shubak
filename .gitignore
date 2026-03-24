@@ -1,0 +1,43 @@
+# === Dependencies ===
+node_modules/
+
+# === Next.js build ===
+.next/
+out/
+
+# === TypeScript ===
+tsconfig.tsbuildinfo
+
+# === Environment variables ===
+.env
+.env.local
+.env.*.local
+
+# === Temporary browser profiles (testing) ===
+.tmp-*/
+
+# === Test output ===
+test-results/
+
+# === Dev server logs ===
+.next-start*.log
+.next-start*.err
+
+# === OS files ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === Editor / IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === Agent / internal docs (optional — remove lines to include) ===
+CLAUDE.md
+PRD.md
+artifacts/
+tasks/
+workflows/
+progress.md

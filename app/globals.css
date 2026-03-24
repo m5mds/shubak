@@ -1,0 +1,337 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS variables ─────────────────────────────────────────────────────── */
+:root {
+  --font-mono: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+  --border: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
+  --motion-duration-enter: 0.9s;
+  --motion-duration-surface: 1.05s;
+  --service-spotlight-size: 28rem;
+  --service-shadow: 0 26px 70px rgba(0, 0, 0, 0.34);
+
+  /* Easing */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  color-scheme: dark;
+  background-color: #0a0a0f;
+}
+
+/* ─── Font switching via locale class on <html> ─────────────────────────── */
+
+/* Arabic — Readex Pro for everything */
+.lang-ar,
+.lang-ar * {
+  font-family: var(--font-readex), sans-serif;
+}
+
+/* Preserve monospace */
+.lang-ar .font-mono,
+.lang-ar code,
+.lang-ar pre {
+  font-family: var(--font-mono);
+}
+
+/* English — DM Sans for body, Instrument Serif for headings */
+.lang-en {
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.lang-en h1,
+.lang-en h2,
+.lang-en h3,
+.lang-en .font-serif {
+  font-family: var(--font-serif), Georgia, serif;
+}
+
+/* Preserve monospace in EN too */
+.lang-en .font-mono,
+.lang-en code,
+.lang-en pre {
+  font-family: var(--font-mono);
+}
+
+/* ─── Base resets ────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #0a0a0f;
+  color: #ededed;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Arabic needs a touch more line-height */
+:lang(ar) body,
+.lang-ar body {
+  line-height: 1.8;
+}
+
+/* ─── Remove default list styles ─────────────────────────────────────────── */
+ul,
+ol {
+  list-style: none;
+}
+
+/* ─── Links ──────────────────────────────────────────────────────────────── */
+a {
+  color: inherit;
+  text-decoration: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.12);
+}
+
+/* ─── Buttons ────────────────────────────────────────────────────────────── */
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0.12);
+}
+
+main [id] {
+  scroll-margin-top: 6rem;
+}
+
+/* ─── Focus styles ───────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ─── Selection ──────────────────────────────────────────────────────────── */
+::selection {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ededed;
+}
+
+/* ─── Utility: font-mono class ───────────────────────────────────────────── */
+.font-mono {
+  font-family: var(--font-mono) !important;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.homepage-shell {
+  position: relative;
+  isolation: isolate;
+  background-color: #0a0a0f;
+}
+
+.homepage-shell::before,
+.homepage-shell::after {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.homepage-shell::before {
+  background:
+    radial-gradient(44% 24% at 50% 6%, rgba(120, 170, 255, 0.08) 0%, transparent 72%),
+    radial-gradient(30% 24% at 82% 38%, rgba(255, 255, 255, 0.045) 0%, transparent 78%),
+    radial-gradient(28% 18% at 16% 64%, rgba(255, 226, 183, 0.04) 0%, transparent 80%);
+  animation: ambient-glow 6s ease-in-out infinite;
+}
+
+.homepage-shell::after {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.018) 0%, rgba(255, 255, 255, 0) 22%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0) 44%, rgba(255, 255, 255, 0.016) 58%, rgba(255, 255, 255, 0) 100%);
+  opacity: 0.72;
+}
+
+.homepage-shell > *:not([data-page-load-sequence='true']) {
+  position: relative;
+  z-index: 1;
+}
+
+.homepage-seam {
+  pointer-events: none;
+  position: relative;
+  z-index: 4;
+}
+
+.homepage-seam::before,
+.homepage-seam::after {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+}
+
+.homepage-seam::before {
+  background: linear-gradient(180deg, rgba(10, 10, 15, 0) 0%, rgba(10, 10, 15, 0.9) 50%, rgba(10, 10, 15, 0) 100%);
+  opacity: 0.96;
+}
+
+.homepage-seam::after {
+  inset: 12% 6%;
+  border-radius: 999px;
+  filter: blur(44px);
+  opacity: 0.82;
+}
+
+.homepage-seam--hero-services::after {
+  background:
+    radial-gradient(circle at 50% 48%, rgba(120, 170, 255, 0.14) 0%, rgba(255, 255, 255, 0.05) 34%, transparent 72%);
+}
+
+.homepage-seam--services-about::after {
+  background:
+    radial-gradient(circle at 28% 54%, rgba(255, 255, 255, 0.08) 0%, transparent 48%),
+    radial-gradient(circle at 74% 50%, rgba(120, 170, 255, 0.1) 0%, transparent 50%);
+}
+
+.homepage-seam--about-process::after {
+  background:
+    radial-gradient(circle at 38% 50%, rgba(255, 226, 183, 0.08) 0%, transparent 52%),
+    radial-gradient(circle at 72% 46%, rgba(255, 255, 255, 0.06) 0%, transparent 48%);
+}
+
+.homepage-seam--process-cta::after {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(120, 170, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 36%, transparent 72%);
+}
+
+.homepage-section {
+  position: relative;
+  isolation: isolate;
+}
+
+.homepage-section::before,
+.homepage-section::after {
+  content: '';
+  pointer-events: none;
+  position: absolute;
+  inset-inline: 0;
+  z-index: 0;
+}
+
+.homepage-section::before {
+  top: 0;
+  height: clamp(140px, 18vw, 240px);
+  background: var(--section-top-atmosphere, linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 82%));
+  opacity: 0.92;
+}
+
+.homepage-section::after {
+  bottom: 0;
+  height: clamp(148px, 20vw, 260px);
+  background: var(--section-bottom-atmosphere, linear-gradient(0deg, rgba(255, 255, 255, 0.04), transparent 82%));
+  opacity: 0.88;
+}
+
+.homepage-section--services {
+  --section-top-atmosphere:
+    radial-gradient(54% 70% at 50% 0%, rgba(120, 170, 255, 0.11) 0%, rgba(255, 255, 255, 0.02) 42%, transparent 76%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 82%);
+  --section-bottom-atmosphere:
+    radial-gradient(48% 65% at 18% 100%, rgba(255, 255, 255, 0.06) 0%, transparent 74%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.03), transparent 82%);
+}
+
+.homepage-section--about {
+  --section-top-atmosphere:
+    radial-gradient(50% 74% at 18% 0%, rgba(255, 255, 255, 0.08) 0%, transparent 76%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 82%);
+  --section-bottom-atmosphere:
+    radial-gradient(44% 72% at 78% 100%, rgba(255, 226, 183, 0.06) 0%, transparent 76%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.028), transparent 82%);
+}
+
+.homepage-section--process {
+  --section-top-atmosphere:
+    radial-gradient(50% 70% at 72% 0%, rgba(120, 170, 255, 0.08) 0%, transparent 76%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 82%);
+  --section-bottom-atmosphere:
+    radial-gradient(52% 72% at 50% 100%, rgba(255, 255, 255, 0.05) 0%, transparent 78%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.028), transparent 82%);
+}
+
+.homepage-section--cta {
+  --section-top-atmosphere:
+    radial-gradient(56% 82% at 50% 0%, rgba(120, 170, 255, 0.1) 0%, rgba(255, 255, 255, 0.025) 40%, transparent 76%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), transparent 82%);
+  --section-bottom-atmosphere:
+    radial-gradient(42% 70% at 50% 100%, rgba(255, 255, 255, 0.05) 0%, transparent 78%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.03), transparent 82%);
+}
+
+/* ─── Ambient glow — homepage background breathing ───────────────────────── */
+@keyframes ambient-glow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ─── Shine keyframe — hero Arabic accent text ───────────────────────────── */
+@keyframes shine {
+  0% {
+    background-position: 150% center;
+  }
+
+  100% {
+    background-position: -50% center;
+  }
+}
+
+/* ─── Float keyframe — hero decorative service cards ─────────────────────── */
+@keyframes float-card {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* ─── Reduced motion ─────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
