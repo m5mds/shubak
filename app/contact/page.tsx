@@ -49,30 +49,11 @@ export default function ContactPage() {
     setErrorKey(null)
 
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      })
-
-      if (!response.ok) {
-        const data = (await response.json().catch(() => null)) as { error?: string } | null
-
-        if (data?.error === 'rate_limited') {
-          setErrorKey('rateLimited')
-          startCooldown()
-        } else if (data?.error === 'missing_fields') {
-          setErrorKey('requiredFields')
-        } else if (data?.error === 'invalid_email') {
-          setErrorKey('invalidEmail')
-        } else {
-          setErrorKey('errorMessage')
-        }
-
-        return
-      }
+      const subject = encodeURIComponent(`New inquiry from ${payload.name}`)
+      const body = encodeURIComponent(
+        `Name: ${payload.name}\nEmail: ${payload.email}\n\nMessage:\n${payload.message}`
+      )
+      window.location.href = `mailto:hello@shubak.ai?subject=${subject}&body=${body}`
 
       setSubmitted(true)
       setForm({ name: '', email: '', message: '' })
