@@ -1,93 +1,85 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { ShubakLogo } from '@/components/ui/ShubakLogo'
 import { useLocale } from '@/lib/i18n/context'
-import { WindowIcon } from '@/components/window-icon'
-import { MobileMenu } from './MobileMenu'
+
+function NavSeparator() {
+  return (
+    <span
+      aria-hidden="true"
+      className="h-5 w-px shrink-0 bg-white/10"
+    />
+  )
+}
 
 export function Navbar() {
   const { locale, setLocale, dict } = useLocale()
-  const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
-
-  useEffect(() => {
-    let ticking = false
-
-    const onScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          setScrolled(window.scrollY > 20)
-          ticking = false
-        })
-        ticking = true
-      }
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   return (
-    <>
-      <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-          scrolled ? 'border-b border-white/[0.06] bg-[#0a0a0f]/80 backdrop-blur-xl' : 'bg-transparent'
-        }`}
+    <header
+      className="fixed top-6 left-1/2 z-[100] -translate-x-1/2"
+      style={{ width: 'max-content', maxWidth: 'calc(100vw - 32px)' }}
+    >
+      <nav
+        className="flex items-center gap-4 rounded-full border border-white/[0.08] px-4 py-2"
+        style={{
+          background: 'rgba(15, 17, 21, 0.85)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+        }}
       >
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 md:px-8 lg:px-12">
-          <Link href="/" className="inline-flex items-center gap-3 text-white transition-colors hover:text-white/80">
-            <WindowIcon size={20} />
-            <span className="text-[15px] font-medium tracking-[0.2em] uppercase">{dict.nav.brand}</span>
-          </Link>
+        {/* Logo — links to home */}
+        <Link
+          href="/"
+          aria-label={dict.site.brand}
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/5 text-white/70 transition-colors hover:text-white"
+        >
+          <ShubakLogo className="h-4 w-4" aria-hidden="true" />
+        </Link>
 
-          <div className="hidden items-center gap-8 md:flex">
-            <Link
-              href="/#services"
-              className="text-[13px] uppercase tracking-[0.04em] text-white/65 transition-colors hover:text-white"
-            >
-              {dict.nav.services}
-            </Link>
-            <Link
-              href="/#about"
-              className="text-[13px] uppercase tracking-[0.04em] text-white/65 transition-colors hover:text-white"
-            >
-              {dict.nav.about}
-            </Link>
-          </div>
+        <NavSeparator />
 
-          <div className="hidden items-center gap-4 md:flex md:gap-6">
-            <button
-              type="button"
-              onClick={() => setLocale(locale === 'ar' ? 'en' : 'ar')}
-              className="text-[11px] uppercase tracking-[0.14em] text-white/70 transition-colors hover:text-white"
-            >
-              {locale === 'ar' ? 'EN' : 'AR'}
-            </button>
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center rounded-full border border-white/[0.12] px-5 py-2.5 text-[11px] uppercase tracking-[0.14em] text-white transition-colors hover:border-white/[0.24] hover:bg-white hover:text-black"
-            >
-              {dict.nav.startProject}
-            </Link>
-          </div>
+        {/* Nav links — pure text, no decorative icons */}
+        <Link
+          href="/#about"
+          className="flex min-h-[44px] items-center text-[14px] font-medium text-[#a0a0a0] transition-colors hover:text-white"
+        >
+          <span className="hidden md:inline">{dict.nav.about}</span>
+        </Link>
 
-          <button
-            type="button"
-            aria-label={dict.nav.openMenu}
-            onClick={() => setMenuOpen(true)}
-            className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/[0.1] text-white transition-colors hover:border-white/[0.2] md:hidden"
-          >
-            <span className="flex flex-col gap-1">
-              <span className="h-px w-4 bg-current" />
-              <span className="h-px w-4 bg-current" />
-              <span className="h-px w-4 bg-current" />
-            </span>
-          </button>
-        </nav>
-      </header>
+        <Link
+          href="/work"
+          className="flex min-h-[44px] items-center text-[14px] font-medium text-[#a0a0a0] transition-colors hover:text-white"
+        >
+          <span className="hidden md:inline">{dict.nav.work}</span>
+        </Link>
 
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
-    </>
+        <Link
+          href="/#services"
+          className="flex min-h-[44px] items-center text-[14px] font-medium text-[#a0a0a0] transition-colors hover:text-white"
+        >
+          <span className="hidden md:inline">{dict.nav.services}</span>
+        </Link>
+
+        <Link
+          href="/contact"
+          className="flex min-h-[44px] items-center text-[14px] font-medium text-[#a0a0a0] transition-colors hover:text-white"
+        >
+          <span className="hidden md:inline">{dict.nav.contact}</span>
+        </Link>
+
+        <NavSeparator />
+
+        {/* Language toggle */}
+        <button
+          type="button"
+          onClick={() => setLocale(locale === 'ar' ? 'en' : 'ar')}
+          className="min-h-[44px] min-w-[44px] text-[14px] font-medium text-[#a0a0a0] transition-colors hover:text-white"
+        >
+          {locale === 'ar' ? 'EN' : 'AR'}
+        </button>
+      </nav>
+    </header>
   )
 }

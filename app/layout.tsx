@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Readex_Pro, DM_Sans, Instrument_Serif } from 'next/font/google'
+import { Alexandria, DM_Sans, Instrument_Serif } from 'next/font/google'
 import { LocaleProvider } from '@/lib/i18n/context'
 import { ar } from '@/lib/i18n/ar'
 import { en } from '@/lib/i18n/en'
@@ -9,7 +9,7 @@ import { CustomCursor } from '@/components/ui/CustomCursor'
 import Footer from '@/components/footer'
 import './globals.css'
 
-const readexPro = Readex_Pro({
+const alexandria = Alexandria({
   subsets: ['arabic', 'latin'],
   weight: ['300', '400', '600', '700'],
   variable: '--font-readex',
@@ -65,7 +65,7 @@ export default function RootLayout({
       lang="ar"
       dir="rtl"
       suppressHydrationWarning
-      className={`${readexPro.variable} ${dmSans.variable} ${instrumentSerif.variable} lang-ar relative min-h-screen bg-[#0a0a0f] text-[#ededed] antialiased`}
+      className={`${alexandria.variable} ${dmSans.variable} ${instrumentSerif.variable} lang-ar relative min-h-screen bg-[#0a0a0f] text-[#ededed] antialiased`}
     >
       <body suppressHydrationWarning className="relative">
         <a

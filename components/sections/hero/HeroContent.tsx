@@ -1,10 +1,10 @@
 'use client'
 
-import React from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { useLocale } from '@/lib/i18n/context'
 import { contentRevealTransition } from '@/lib/motion'
+import { ShubakLogo } from '@/components/ui/ShubakLogo'
 
 export function HeroContent() {
   const { dict } = useLocale()
@@ -37,35 +37,14 @@ export function HeroContent() {
       initial="hidden"
       animate="visible"
     >
-      <motion.div
-        variants={itemVariants}
-        className="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-sm uppercase tracking-[0.2em] text-white/80 backdrop-blur-md md:text-base"
-      >
-        {dict.hero.badge}
+      <motion.div variants={itemVariants} className="flex items-center justify-center" aria-label={dict.site.brand}>
+        <ShubakLogo className="w-[clamp(56px,10vw,88px)] text-white" aria-hidden="true" />
       </motion.div>
 
-      <motion.h1
+      <motion.p
         variants={itemVariants}
-        className="mx-auto max-w-[10ch] text-[clamp(54px,8vw,118px)] font-serif leading-[0.95] tracking-tight text-white md:max-w-[11ch]"
-        style={{ textWrap: 'balance' }}
+        className="mx-auto max-w-2xl text-[17px] leading-relaxed text-white/60 md:text-xl"
       >
-        <span className="opacity-90">{dict.hero.heading1}</span>
-        <br />
-        <span className="text-white/40">
-          {dict.hero.heading2.split(dict.hero.highlight).map((part: string, i: number, arr: string[]) => (
-            <React.Fragment key={i}>
-              {part}
-              {i < arr.length - 1 && (
-                <span className="text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.35)]">
-                  {dict.hero.highlight}
-                </span>
-              )}
-            </React.Fragment>
-          ))}
-        </span>
-      </motion.h1>
-
-      <motion.p variants={itemVariants} className="mx-auto max-w-3xl text-[17px] leading-relaxed text-white/60 md:text-xl">
         {dict.hero.description}
       </motion.p>
 

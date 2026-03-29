@@ -294,6 +294,54 @@ main [id] {
     linear-gradient(0deg, rgba(255, 255, 255, 0.03), transparent 82%);
 }
 
+/* ─── Spotlight grid hover effect (About section 2x2 window panes) ────────── */
+@media (hover: hover) {
+  .spotlight-grid:hover .spotlight-pane {
+    opacity: 0.4;
+    transform: scale(0.98);
+  }
+  .spotlight-grid:hover .spotlight-pane:hover {
+    opacity: 1 !important;
+    transform: scale(1.05) !important;
+    z-index: 10;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  }
+}
+
+@media (hover: none) {
+  .spotlight-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .spotlight-pane {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ─── Service panel subtle animations ────────────────────────────────────── */
+@keyframes svc-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-7px); }
+}
+
+@keyframes svc-pulse-ring {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+@keyframes svc-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes svc-cursor {
+  0%, 100% { transform: translate(0, 0); }
+  30% { transform: translate(9px, -6px); }
+  60% { transform: translate(14px, 4px); }
+  80% { transform: translate(5px, 10px); }
+}
+
 /* ─── Ambient glow — homepage background breathing ───────────────────────── */
 @keyframes ambient-glow {
   0%, 100% { opacity: 0.6; }

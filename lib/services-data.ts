@@ -28,12 +28,12 @@ export const services: ServiceData[] = [
     slug: 'web-mobile',
     number: '01',
     title: {
-      ar: 'تطوير الويب والموبايل',
-      en: 'Web & Mobile Development',
+      ar: 'تطوير تطبيقات الويب والجوال',
+      en: 'Web & Mobile App Development',
     },
     description: {
-      ar: 'تطبيقات متكاملة مبنية للتوسّع — من المنصات الرقمية إلى تطبيقات الهاتف.',
-      en: 'Full-stack applications built for scale — from responsive platforms to native mobile experiences.',
+      ar: 'نبني تطبيقات متكاملة من الفكرة إلى الإطلاق، مع تركيز على الأداء والاستقرار.',
+      en: 'We build complete applications from idea to launch, focused on performance and stability.',
     },
     subServices: [
       { ar: 'واجهات أمامية (React / Next.js)', en: 'Frontend Platforms (React / Next.js)' },
@@ -47,12 +47,12 @@ export const services: ServiceData[] = [
     slug: 'ai-solutions',
     number: '02',
     title: {
-      ar: 'حلول الذكاء الاصطناعي',
-      en: 'AI Solutions',
+      ar: 'حلول ذكية مدعومة بالذكاء الاصطناعي',
+      en: 'Smart Solutions Powered by AI',
     },
     description: {
-      ar: 'ذكاء اصطناعي جاهز للإنتاج — من تطبيقات النماذج اللغوية إلى الرؤية الحاسوبية والأتمتة الذكية.',
-      en: 'Production-ready AI — from LLM-powered apps to computer vision and intelligent automation.',
+      ar: 'نحوّل النماذج الذكية إلى أدوات عملية داخل منتجاتك.',
+      en: 'We turn intelligent models into practical tools inside your products.',
     },
     subServices: [
       { ar: 'تطبيقات النماذج اللغوية الكبيرة و RAG', en: 'LLM Applications & RAG Systems' },
@@ -66,12 +66,12 @@ export const services: ServiceData[] = [
     slug: 'automation-devops',
     number: '03',
     title: {
-      ar: 'الأتمتة و DevOps',
-      en: 'Automation & DevOps',
+      ar: 'الأتمتة',
+      en: 'Automation',
     },
     description: {
-      ar: 'بنية تحتية تدير نفسها — أنابيب نشر مؤتمتة، مراقبة، ونشر بدون توقّف.',
-      en: 'Infrastructure that runs itself — automated pipelines, monitoring, and zero-downtime deployment.',
+      ar: 'نقوم بأتمتة العمليات لتقليل الجهد اليدوي وزيادة الكفاءة.',
+      en: 'We automate processes to reduce manual effort and increase efficiency.',
     },
     subServices: [
       { ar: 'تصميم أنابيب CI/CD', en: 'CI/CD Pipeline Design' },
@@ -85,12 +85,12 @@ export const services: ServiceData[] = [
     slug: 'ui-ux-design',
     number: '04',
     title: {
-      ar: 'تصميم واجهات المستخدم',
+      ar: 'تصميم واجهات المستخدم وتجربة المستخدم',
       en: 'UI/UX Design',
     },
     description: {
-      ar: 'واجهات مبنية على البحث والتحليل — من الاكتشاف إلى أنظمة تصميم جاهزة للتطوير.',
-      en: 'Research-driven interfaces from discovery to pixel-perfect systems developers can build.',
+      ar: 'نصمم تجارب واضحة وسهلة الاستخدام مبنية على فهم المستخدم.',
+      en: 'We design clear, easy-to-use experiences built on understanding your users.',
     },
     subServices: [
       { ar: 'بحث المستخدمين واستراتيجية المنتج', en: 'User Research & Strategy' },

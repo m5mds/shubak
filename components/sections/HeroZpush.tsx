@@ -120,7 +120,7 @@ export function HeroZpush() {
 
       <section
         ref={containerRef}
-        className="relative flex min-h-screen w-full items-center justify-center bg-[#0a0a0f] pt-20 md:pt-24 lg:pt-28"
+        className="relative flex h-[100dvh] min-h-[640px] w-full items-center justify-center bg-[#0a0a0f] pt-20 md:pt-24 lg:pt-28"
       >
         <div data-hero-scene="true" ref={heroSceneRef} className="flex w-full flex-col items-center justify-center px-4 md:px-6 lg:px-8">
           <HeroWindowFrame>

@@ -1,22 +1,66 @@
 'use client'
 
-import Link from 'next/link'
+import { useState, useCallback, useEffect } from 'react'
+import { useLocale } from '@/lib/i18n/context'
 import { SectionReveal } from '@/components/motion/SectionReveal'
 import { SurfaceReveal } from '@/components/motion/SurfaceReveal'
 import { WindowFrame } from '@/components/ui/WindowFrame'
-import { useLocale } from '@/lib/i18n/context'
 
-interface CtaSectionProps {
-  href?: string
-  label?: string
-}
+const COOLDOWN_SECONDS = 60
 
-export default function CtaSection({ href, label }: CtaSectionProps) {
+export default function CtaSection() {
   const { dict } = useLocale()
-  const callToActionHref = href ?? '/contact'
-  const callToActionLabel = label ?? dict.cta.primaryAction
-  const directEmailHref = `mailto:${dict.cta.button}`
-  const isMailto = callToActionHref.startsWith('mailto:')
+  const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [errorKey, setErrorKey] = useState<'requiredFields' | 'invalidEmail' | 'errorMessage' | null>(null)
+  const [form, setForm] = useState({ name: '', email: '', message: '' })
+  const [cooldown, setCooldown] = useState(0)
+
+  useEffect(() => {
+    if (cooldown <= 0) return
+    const id = setTimeout(() => setCooldown((c) => c - 1), 1000)
+    return () => clearTimeout(id)
+  }, [cooldown])
+
+  const startCooldown = useCallback(() => setCooldown(COOLDOWN_SECONDS), [])
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+
+    const payload = {
+      name: form.name.trim(),
+      email: form.email.trim(),
+      message: form.message.trim(),
+    }
+
+    if (!payload.name || !payload.email || !payload.message) {
+      setErrorKey('requiredFields')
+      return
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
+      setErrorKey('invalidEmail')
+      return
+    }
+
+    setLoading(true)
+    setErrorKey(null)
+
+    try {
+      const subject = encodeURIComponent(`New inquiry from ${payload.name}`)
+      const body = encodeURIComponent(
+        `Name: ${payload.name}\nEmail: ${payload.email}\n\nProject Idea:\n${payload.message}`
+      )
+      window.location.href = `mailto:hello@shubak.ai?subject=${subject}&body=${body}`
+      setSubmitted(true)
+      setForm({ name: '', email: '', message: '' })
+      startCooldown()
+    } catch {
+      setErrorKey('errorMessage')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <section
@@ -26,107 +70,134 @@ export default function CtaSection({ href, label }: CtaSectionProps) {
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-[420px]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[360px]"
         style={{
-          background: 'radial-gradient(ellipse 60% 46% at 50% 10%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 36%, transparent 74%)',
+          background: 'radial-gradient(ellipse 60% 46% at 50% 10%, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 36%, transparent 74%)',
         }}
       />
 
-      <div className="relative z-10 mx-auto max-w-6xl px-5 lg:px-10">
-        <SectionReveal className="mx-auto max-w-3xl text-center">
-          <p className="mb-5 font-mono text-[11px] uppercase tracking-[0.25em] text-white/46 md:text-[13px]">
-            {dict.cta.eyebrow}
-          </p>
+      <div className="relative z-10 mx-auto max-w-2xl px-5 lg:px-10">
+        <SectionReveal className="mb-10 text-center">
+          <span className="mb-4 block font-mono text-sm uppercase tracking-[0.25em] text-white/50">
+            {dict.contact.title}
+          </span>
+          <h2 className="text-[clamp(28px,3.8vw,48px)] font-medium tracking-tight text-white">
+            {dict.contact.subtitle}
+          </h2>
         </SectionReveal>
 
-        <SurfaceReveal delay={0.08} className="mt-8">
-          <div className="grid gap-3 md:grid-cols-3">
-            {dict.cta.proofStrip.map((item) => (
-              <div
-                key={item.label}
-                className="relative overflow-hidden rounded-[18px] border border-white/[0.08] bg-white/[0.03] px-5 py-5 backdrop-blur-[10px]"
-              >
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/18 to-transparent"
-                />
-                <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/38">{item.label}</p>
-                <p className="mt-3 text-[15px] leading-relaxed text-white/76">{item.value}</p>
-              </div>
-            ))}
-          </div>
-        </SurfaceReveal>
-
-        <SurfaceReveal delay={0.14} className="mt-6">
-          <WindowFrame variant="glass" className="overflow-hidden border-white/[0.08] bg-[#0f1016]/78">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute inset-x-0 top-0 h-px"
-              style={{
-                background:
-                  'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.22) 20%, rgba(255,255,255,0.22) 80%, rgba(255,255,255,0) 100%)',
-              }}
-            />
-
-            <div className="grid gap-10 px-8 py-10 md:px-12 md:py-14 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-12">
-              <div>
-                <h2 className="max-w-[14ch] text-[clamp(34px,5vw,64px)] leading-[1.04] tracking-tight text-white">
-                  {dict.cta.heading}
-                </h2>
-                <p className="mt-6 max-w-2xl text-[17px] leading-relaxed text-white/62 md:text-[19px]">
-                  {dict.cta.subtitle}
-                </p>
-                <p className="mt-8 max-w-2xl font-mono text-[11px] uppercase tracking-[0.16em] text-white/38 md:text-[12px]">
-                  {dict.cta.trustLine}
-                </p>
-
-                <div className="mt-8 flex flex-wrap gap-3">
-                  {isMailto ? (
-                    <a
-                      href={callToActionHref}
-                      className="inline-flex h-14 items-center justify-center rounded-full bg-gradient-to-b from-white to-white/92 px-7 text-[14px] font-medium uppercase tracking-[0.12em] text-black shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_1px_3px_rgba(0,0,0,0.3)] transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-expo)] hover:scale-[1.01] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_4px_16px_rgba(255,255,255,0.15)] focus-visible:scale-[1.01]"
+        <SurfaceReveal delay={0.1}>
+          <WindowFrame variant="glass" className="overflow-hidden border-white/[0.08]">
+            <div className="px-7 py-8 md:px-10 md:py-10">
+              {submitted ? (
+                <div className="py-8 text-center">
+                  <p className="text-[17px] text-white/80">{dict.contact.successMessage}</p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-7">
+                  {errorKey && (
+                    <div
+                      role="alert"
+                      aria-live="polite"
+                      className="rounded-[10px] border border-white/[0.1] bg-white/[0.03] p-4 text-[14px] text-white/65"
                     >
-                      {callToActionLabel}
-                    </a>
-                  ) : (
-                    <Link
-                      href={callToActionHref}
-                      className="inline-flex h-14 items-center justify-center rounded-full bg-gradient-to-b from-white to-white/92 px-7 text-[14px] font-medium uppercase tracking-[0.12em] text-black shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_1px_3px_rgba(0,0,0,0.3)] transition-[transform,box-shadow,background-color] duration-300 ease-[var(--ease-out-expo)] hover:scale-[1.01] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_4px_16px_rgba(255,255,255,0.15)] focus-visible:scale-[1.01]"
-                    >
-                      {callToActionLabel}
-                    </Link>
+                      <p>{dict.contact[errorKey]}</p>
+                      <button
+                        type="button"
+                        onClick={() => setErrorKey(null)}
+                        className="mt-2 font-mono text-[11px] uppercase tracking-[0.14em] text-white/50 transition-colors hover:text-white"
+                      >
+                        {dict.contact.retry}
+                      </button>
+                    </div>
                   )}
 
-                  <a
-                    href={directEmailHref}
-                    className="inline-flex h-14 items-center justify-center rounded-full border border-white/12 bg-white/[0.03] px-7 text-[14px] font-medium uppercase tracking-[0.12em] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-sm transition-[transform,border-color,background-color,color] duration-300 ease-[var(--ease-out-expo)] hover:scale-[1.01] hover:border-white/22 hover:bg-white/[0.08] hover:text-white focus-visible:scale-[1.01]"
-                  >
-                    {dict.cta.secondaryAction}
-                  </a>
-                </div>
-              </div>
-
-              <div className="flex flex-col justify-between gap-4">
-                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-white/35">
-                  {dict.cta.storyEyebrow}
-                </p>
-
-                <div className="space-y-4">
-                  {dict.cta.storyBlocks.map((item) => (
-                    <div
-                      key={item.title}
-                      className="relative overflow-hidden rounded-[18px] border border-white/[0.08] bg-white/[0.02] px-5 py-5"
+                  <div>
+                    <label
+                      htmlFor="cta-name"
+                      className="mb-2 block font-mono text-[11px] uppercase tracking-[0.14em] text-white/40"
                     >
-                      <div
-                        aria-hidden="true"
-                        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent"
-                      />
-                      <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/35">{item.title}</p>
-                      <p className="mt-3 text-[15px] leading-relaxed text-white/72">{item.description}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+                      {dict.contact.name}
+                    </label>
+                    <input
+                      id="cta-name"
+                      name="name"
+                      type="text"
+                      required
+                      autoComplete="name"
+                      dir="auto"
+                      value={form.name}
+                      onChange={(e) => {
+                        setForm((prev) => ({ ...prev, name: e.target.value }))
+                        setErrorKey(null)
+                      }}
+                      placeholder={dict.contact.name}
+                      className="w-full rounded-none border-b border-white/[0.1] bg-transparent py-3 text-[15px] text-white outline-none transition-colors placeholder:text-white/25 hover:border-white/[0.2] focus:border-white/[0.3]"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="cta-email"
+                      className="mb-2 block font-mono text-[11px] uppercase tracking-[0.14em] text-white/40"
+                    >
+                      {dict.contact.email}
+                    </label>
+                    <input
+                      id="cta-email"
+                      name="email"
+                      type="email"
+                      required
+                      autoComplete="email"
+                      spellCheck={false}
+                      dir="ltr"
+                      value={form.email}
+                      onChange={(e) => {
+                        setForm((prev) => ({ ...prev, email: e.target.value }))
+                        setErrorKey(null)
+                      }}
+                      placeholder={dict.contact.email}
+                      className="w-full rounded-none border-b border-white/[0.1] bg-transparent py-3 text-[15px] text-white outline-none transition-colors placeholder:text-white/25 hover:border-white/[0.2] focus:border-white/[0.3]"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="cta-message"
+                      className="mb-2 block font-mono text-[11px] uppercase tracking-[0.14em] text-white/40"
+                    >
+                      {dict.contact.message}
+                    </label>
+                    <textarea
+                      id="cta-message"
+                      name="message"
+                      required
+                      rows={4}
+                      dir="auto"
+                      value={form.message}
+                      onChange={(e) => {
+                        setForm((prev) => ({ ...prev, message: e.target.value }))
+                        setErrorKey(null)
+                      }}
+                      placeholder={dict.contact.message}
+                      className="w-full resize-none rounded-none border-b border-white/[0.1] bg-transparent py-3 text-[15px] text-white outline-none transition-colors placeholder:text-white/25 hover:border-white/[0.2] focus:border-white/[0.3]"
+                    />
+                  </div>
+
+                  <div className="flex flex-col items-start gap-4 pt-2">
+                    <button
+                      type="submit"
+                      disabled={loading || cooldown > 0}
+                      className="inline-flex h-12 items-center justify-center rounded-full bg-gradient-to-b from-white to-white/92 px-8 text-[13px] font-medium uppercase tracking-[0.14em] text-black shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_1px_3px_rgba(0,0,0,0.3)] transition-[transform,box-shadow,opacity] duration-300 ease-[var(--ease-out-expo)] hover:scale-[1.01] hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_4px_16px_rgba(255,255,255,0.15)] disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                      {cooldown > 0 ? `${dict.contact.submit} (${cooldown}s)` : dict.contact.submit}
+                    </button>
+                    <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/35">
+                      {dict.cta.trustLine}
+                    </p>
+                  </div>
+                </form>
+              )}
             </div>
           </WindowFrame>
         </SurfaceReveal>

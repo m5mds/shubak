@@ -8,6 +8,8 @@ export interface Dictionary {
     brand: string;
     services: string;
     about: string;
+    work: string;
+    contact: string;
     startProject: string;
     openMenu: string;
     closeMenu: string;
@@ -77,6 +79,17 @@ export interface Dictionary {
     errorMessage: string;
     rateLimited: string;
     retry: string;
+  };
+  projects: {
+    sectionTag: string;
+    sectionHeading: string;
+    subtitle: string;
+    playVideo: string;
+    closeModal: string;
+    items: Array<{
+      title: string;
+      description: string;
+    }>;
   };
   notFound: {
     code: string;

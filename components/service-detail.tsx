@@ -96,7 +96,7 @@ export default function ServiceDetail({ slug }: Props) {
         </div>
       </section>
 
-      <CtaSection href="/contact" label={dict.nav.startProject} />
+      <CtaSection />
     </section>
   )
 }

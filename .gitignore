@@ -41,3 +41,7 @@ artifacts/
 tasks/
 workflows/
 progress.md
+.claude-flow
+.claude
+.github
+.mcp.json

@@ -2,6 +2,7 @@ import { HeroZpush } from '@/components/sections/HeroZpush'
 import { ServicesHorizontalScroll } from '@/components/sections/services/ServicesHorizontalScroll'
 import AboutSection from '@/components/about-section'
 import { ProcessSection } from '@/components/sections/ProcessSection'
+import { ProjectsSection } from '@/components/sections/ProjectsSection'
 import CtaSection from '@/components/cta-section'
 
 function HomepageSeam({ variant }: { variant: string }) {
@@ -18,12 +19,14 @@ export default function HomePage() {
     <div className="homepage-shell w-full">
       <HeroZpush />
       <HomepageSeam variant="homepage-seam--hero-services" />
-      <ServicesHorizontalScroll />
-      <HomepageSeam variant="homepage-seam--services-about" />
       <AboutSection />
+      <HomepageSeam variant="homepage-seam--services-about" />
+      <ServicesHorizontalScroll />
       <HomepageSeam variant="homepage-seam--about-process" />
       <ProcessSection />
       <HomepageSeam variant="homepage-seam--process-cta" />
+      <ProjectsSection />
+      <HomepageSeam variant="homepage-seam--hero-services" />
       <CtaSection />
     </div>
   )

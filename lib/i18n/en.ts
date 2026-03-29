@@ -8,17 +8,19 @@ export const en: Dictionary = {
     brand: 'Shubak',
     services: 'Services',
     about: 'About',
+    work: 'Work',
+    contact: 'Contact',
     startProject: 'Start a Project',
     openMenu: 'Open menu',
     closeMenu: 'Close menu',
   },
   hero: {
     badge: 'Software Engineering Studio',
-    heading1: 'We build the software',
-    heading2: "others can't.",
-    highlight: "others can't.",
+    heading1: 'Shubak —',
+    heading2: 'Your window to building digital systems that work.',
+    highlight: 'that work.',
     description:
-      'We design and engineer software that works at scale — web platforms, AI systems, automation, and everything between. From Saudi Arabia to the world.',
+      'Shubak means window. We give businesses a clear view into technology — cutting through complexity to build systems that work, scale, and last. From Saudi Arabia, serving clients globally.',
     ctaPrimary: 'Start a Project',
     ctaSecondary: 'Explore Services',
   },
@@ -32,7 +34,7 @@ export const en: Dictionary = {
     sectionTag: 'Why Shubak',
     sectionHeading: 'Clarity through craft.',
     statement:
-      'Shubak means window in Arabic. We give businesses a clear view into technology — cutting through complexity to deliver systems that work, scale, and last. Based in Saudi Arabia, serving clients globally.',
+      "At Shubak, we don't rely on off-the-shelf solutions or recycled templates. Every system we build is designed around your actual needs — accounting for your environment, user scale, and future growth plans. We focus on building solid technical foundations from the start, reducing complexity later and ensuring long-term stability. We work directly with you to understand the details, then turn them into a system that is clear, executable, and keeps growing without needing to be rebuilt.",
     points: [
       {
         title: 'End-to-end ownership',
@@ -48,6 +50,11 @@ export const en: Dictionary = {
         title: 'Technical depth',
         description:
           'AI, infrastructure, full-stack — we go deep where others outsource. Complex problems are what we do best.',
+      },
+      {
+        title: 'Direct collaboration',
+        description:
+          'We work directly with you to understand the details and turn them into a system that is clear, executable, and keeps growing.',
       },
     ],
   },
@@ -72,6 +79,39 @@ export const en: Dictionary = {
       {
         title: 'Launch',
         description: "We deploy, monitor, and support — your project doesn't end at launch.",
+      },
+    ],
+  },
+  projects: {
+    sectionTag: 'Projects',
+    sectionHeading: 'Systems we built that actually work.',
+    subtitle: 'Click to view project',
+    playVideo: 'Play',
+    closeModal: 'Close',
+    items: [
+      {
+        title: 'Order Management Platform',
+        description: 'A complete order and inventory management system with a real-time analytics dashboard.',
+      },
+      {
+        title: 'AI Solutions',
+        description: 'Applications powered by advanced AI models to automate decisions and improve efficiency.',
+      },
+      {
+        title: 'Workflow Automation',
+        description: 'Automated infrastructure that cuts deployment time and increases reliability.',
+      },
+      {
+        title: 'Digital Learning Platform',
+        description: 'An interactive learning experience supporting thousands of concurrent users.',
+      },
+      {
+        title: 'Analytics Dashboard',
+        description: 'A real-time analytics system that turns raw data into actionable decisions.',
+      },
+      {
+        title: 'Mobile Application',
+        description: 'A cross-platform app combining high performance with a seamless user experience.',
       },
     ],
   },
@@ -127,7 +167,7 @@ export const en: Dictionary = {
     subtitle: "Tell us about your project and we'll get back within 24 hours.",
     name: 'Name',
     email: 'Email',
-    message: 'Tell us about your project',
+    message: 'Project Idea',
     submit: 'Send',
     successMessage: 'Thanks! We received your message and will be in touch soon.',
     requiredFields: 'All fields are required.',
