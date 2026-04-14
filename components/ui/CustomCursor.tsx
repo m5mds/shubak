@@ -5,8 +5,10 @@ import { motion, useMotionValue, useSpring } from 'framer-motion'
 import { springMicro } from '@/lib/physics'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 
+type CursorState = 'default' | 'interactive' | 'text'
+
 export function CustomCursor() {
-  const [isOverInteractive, setIsOverInteractive] = useState(false)
+  const [cursorState, setCursorState] = useState<CursorState>('default')
   const hasFinePointer = useMediaQuery('(pointer: fine)')
 
   const cursorX = useMotionValue(-100)
@@ -25,7 +27,13 @@ export function CustomCursor() {
 
     const handleHoverState = (e: Event) => {
       const target = e.target as HTMLElement | null
-      setIsOverInteractive(Boolean(target?.closest('a, button, input, textarea, select, label')))
+      if (target?.closest('input, textarea')) {
+        setCursorState('text')
+      } else if (target?.closest('a, button, select, label')) {
+        setCursorState('interactive')
+      } else {
+        setCursorState('default')
+      }
     }
 
     window.addEventListener('mousemove', moveCursor)
@@ -41,41 +49,55 @@ export function CustomCursor() {
 
   if (!hasFinePointer) return null
 
+  const isOverInteractive = cursorState === 'interactive' || cursorState === 'text'
+  const isText = cursorState === 'text'
+
   return (
     <>
+      {/* Lens ring — 60px circle, brightness magnifier, hides over interactive elements */}
       <motion.div
-        className="fixed top-0 z-[100] h-16 w-16 rounded-full pointer-events-none"
-        animate={{
-          opacity: isOverInteractive ? 0 : 1,
-          scale: isOverInteractive ? 0.85 : 1,
-        }}
+        className="pointer-events-none fixed left-0 top-0 z-[200]"
         style={{
-          position: 'fixed',
-          left: 0,
-          top: 0,
-          pointerEvents: 'none',
           x: smoothX,
           y: smoothY,
           translateX: '-50%',
           translateY: '-50%',
         }}
+        animate={{
+          opacity: isOverInteractive ? 0 : 1,
+          scale: isOverInteractive ? 0.6 : 1,
+        }}
+        transition={{ duration: 0.2, ease: 'easeOut' }}
       >
-        <div className="h-full w-full rounded-full border border-white/10 bg-white/5 backdrop-blur-[4px] shadow-[0_0_20px_rgba(255,255,255,0.1)]" />
+        <div
+          style={{
+            width: 60,
+            height: 60,
+            borderRadius: '50%',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            backdropFilter: 'brightness(1.15)',
+            WebkitBackdropFilter: 'brightness(1.15)',
+          }}
+        />
       </motion.div>
 
+      {/* Inner dot — instant position. Scales up over interactive elements; becomes I-beam over text inputs */}
       <motion.div
-        className="fixed z-[100] h-2 w-2 rounded-full bg-white pointer-events-none mix-blend-difference"
-        animate={{ scale: isOverInteractive ? 1.2 : 1 }}
+        className="pointer-events-none fixed left-0 top-0 z-[201] bg-white"
         style={{
-          position: 'fixed',
-          left: 0,
-          top: 0,
-          pointerEvents: 'none',
           x: cursorX,
           y: cursorY,
           translateX: '-50%',
           translateY: '-50%',
         }}
+        animate={
+          isText
+            ? { width: 1.5, height: 14, borderRadius: 0, scale: 1 }
+            : isOverInteractive
+              ? { width: 5, height: 5, borderRadius: 9999, scale: 2 }
+              : { width: 5, height: 5, borderRadius: 9999, scale: 1 }
+        }
+        transition={{ duration: 0.15, ease: 'easeOut' }}
       />
     </>
   )

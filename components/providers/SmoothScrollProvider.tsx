@@ -1,14 +1,20 @@
 'use client';
 
 import React, { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 // @ts-ignore
 import Lenis from 'lenis';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 
 export function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
   useEffect(() => {
     // Only initialize on client
     if (typeof window === 'undefined') return;
+
+    // Only enable smooth scroll on homepage — other pages use native scroll
+    if (pathname !== '/') return;
 
     // Check for prefers-reduced-motion
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -23,7 +29,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1,
-      touchMultiplier: 2,
+      touchMultiplier: 1,
     });
 
     lenis.on('scroll', ScrollTrigger.update);
@@ -40,7 +46,7 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       lenis.destroy();
       gsap.ticker.remove(tickerCallback);
     };
-  }, []);
+  }, [pathname]);
 
   return <>{children}</>;
 }

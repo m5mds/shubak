@@ -1,6 +1,6 @@
 "use client"
 
-import type { CSSProperties, FocusEvent, PointerEvent } from 'react'
+import React, { type CSSProperties, type FocusEvent, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { WindowFrame } from '@/components/ui/WindowFrame'
 import { useLocale } from '@/lib/i18n/context'
@@ -76,7 +76,7 @@ interface ServicePanelProps {
   onDeactivate?: () => void
 }
 
-export function ServicePanel({
+function ServicePanelInner({
   service,
   className,
   isActive = false,
@@ -86,19 +86,29 @@ export function ServicePanel({
 }: ServicePanelProps) {
   const { dict } = useLocale()
   const isMuted = hasActiveSibling && !isActive
+  const linkRef = useRef<HTMLAnchorElement>(null)
 
-  const handlePointerMove = (event: PointerEvent<HTMLAnchorElement>) => {
-    if (event.pointerType === 'touch') {
-      return
+  useEffect(() => {
+    const el = linkRef.current
+    if (!el) return
+
+    const handlePointerMove = (event: globalThis.PointerEvent) => {
+      if (event.pointerType === 'touch') return
+
+      const rect = el.getBoundingClientRect()
+      const x = ((event.clientX - rect.left) / rect.width) * 100
+      const y = ((event.clientY - rect.top) / rect.height) * 100
+
+      el.style.setProperty('--spotlight-x', `${x}%`)
+      el.style.setProperty('--spotlight-y', `${y}%`)
     }
 
-    const rect = event.currentTarget.getBoundingClientRect()
-    const x = ((event.clientX - rect.left) / rect.width) * 100
-    const y = ((event.clientY - rect.top) / rect.height) * 100
+    el.addEventListener('pointermove', handlePointerMove, { passive: true })
 
-    event.currentTarget.style.setProperty('--spotlight-x', `${x}%`)
-    event.currentTarget.style.setProperty('--spotlight-y', `${y}%`)
-  }
+    return () => {
+      el.removeEventListener('pointermove', handlePointerMove)
+    }
+  }, [])
 
   const handleFocus = (_event: FocusEvent<HTMLAnchorElement>) => {
     onActivate?.()
@@ -117,6 +127,7 @@ export function ServicePanel({
       )}
     >
       <Link
+        ref={linkRef}
         href={`/services/${service.slug}`}
         aria-label={`${dict.services.cardAction}: ${service.title}`}
         className="group/service block h-full w-full"
@@ -130,11 +141,10 @@ export function ServicePanel({
         onBlur={handleBlur}
         onPointerEnter={onActivate}
         onPointerLeave={onDeactivate}
-        onPointerMove={handlePointerMove}
       >
         <WindowFrame
           hideTitleBar
-          className="relative h-full w-full border-white/[0.08] bg-[#0e1016]/90 shadow-[var(--service-shadow)] transition-[transform,border-color,box-shadow] duration-500 ease-[var(--ease-out-expo)] group-hover/service:-translate-y-1 group-hover/service:border-white/[0.18] group-focus-visible/service:-translate-y-1 group-focus-visible/service:border-white/[0.18] group-focus-visible/service:shadow-[0_34px_80px_rgba(0,0,0,0.42)]"
+          className="relative h-full w-full border-white/[0.08] bg-[#0e1016]/90 shadow-[var(--service-shadow)] transition-[transform,border-color,box-shadow] duration-300 ease-[var(--ease-out-expo)] group-hover/service:-translate-y-1 group-hover/service:border-white/[0.18] group-focus-visible/service:-translate-y-1 group-focus-visible/service:border-white/[0.18] group-focus-visible/service:shadow-[0_34px_80px_rgba(0,0,0,0.42)]"
         >
           {/* Spotlight radial gradient on hover */}
           <div
@@ -142,7 +152,7 @@ export function ServicePanel({
             className="pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-500 ease-[var(--ease-out-expo)] group-hover/service:opacity-100 group-focus-visible/service:opacity-100"
             style={{
               background:
-                'radial-gradient(var(--service-spotlight-size) circle at var(--spotlight-x) var(--spotlight-y), rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.08) 16%, rgba(255,255,255,0) 56%)',
+                'radial-gradient(350px circle at var(--spotlight-x) var(--spotlight-y), rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.045) 16%, rgba(255,255,255,0) 56%)',
             }}
           />
 
@@ -172,12 +182,12 @@ export function ServicePanel({
               {/* Tech stack overlay — absolute inset-0 so it covers ONLY this 160px canvas area */}
               <div
                 aria-hidden="true"
-                className="absolute inset-0 z-10 hidden flex-wrap content-center items-center justify-center gap-2 bg-[#0e1016]/92 p-4 opacity-0 backdrop-blur-md transition-[opacity,transform] duration-300 ease-out translate-y-3 [@media(hover:hover)]:flex group-hover/service:opacity-100 group-hover/service:translate-y-0 group-focus-visible/service:opacity-100 group-focus-visible/service:translate-y-0"
+                className="absolute inset-0 z-10 hidden flex-wrap content-center items-center justify-center gap-2 border-t border-white/[0.06] bg-[#0e1016]/92 p-4 opacity-0 backdrop-blur-sm transition-[opacity,transform] duration-300 ease-out translate-y-3 scale-95 [@media(hover:hover)]:flex group-hover/service:opacity-100 group-hover/service:translate-y-0 group-hover/service:scale-100 group-focus-visible/service:opacity-100 group-focus-visible/service:translate-y-0 group-focus-visible/service:scale-100"
               >
                 {service.tools.map((tool) => (
                   <span
                     key={tool}
-                    className="rounded-full border border-white/15 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-white/65"
+                    className="rounded-full border border-white/15 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.12em] text-white/65 transition-colors duration-200 hover:border-white/30 hover:bg-white/[0.03] hover:text-white/90"
                   >
                     {tool}
                   </span>
@@ -201,3 +211,5 @@ export function ServicePanel({
     </div>
   )
 }
+
+export const ServicePanel = React.memo(ServicePanelInner)

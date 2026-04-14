@@ -26,7 +26,7 @@ export default function HomePage() {
       <ProcessSection />
       <HomepageSeam variant="homepage-seam--process-cta" />
       <ProjectsSection />
-      <HomepageSeam variant="homepage-seam--hero-services" />
+      <HomepageSeam variant="homepage-seam--projects-cta" />
       <CtaSection />
     </div>
   )

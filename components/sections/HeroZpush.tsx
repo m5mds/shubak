@@ -34,6 +34,7 @@ export function HeroZpush() {
         gsap.set(heroSceneRef.current, {
           opacity: 1 - clampedProgress,
           y: y * clampedProgress,
+          scale: blur > 0 ? 1 - 0.04 * clampedProgress : 1,
           filter: blur > 0 ? `blur(${(blur * clampedProgress).toFixed(3)}px)` : 'none',
           overwrite: 'auto',
         })
@@ -107,7 +108,7 @@ export function HeroZpush() {
         duration: 1,
         ease: 'power2.out',
         onComplete: () => {
-          setupScrollExit({ y: -60, blur: 4 })
+          setupScrollExit({ y: -60, blur: 18 })
           signalHeroReady()
         },
       }

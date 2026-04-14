@@ -70,7 +70,7 @@ export default function RootLayout({
       <body suppressHydrationWarning className="relative">
         <a
           href="#main-content"
-          className="absolute left-4 top-4 z-[200] -translate-y-16 rounded-full border border-white/15 bg-[#111118] px-4 py-2 text-xs uppercase tracking-[0.14em] text-white transition-transform focus:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+          className="absolute left-4 top-4 z-[202] -translate-y-16 rounded-full border border-white/15 bg-[#111118] px-4 py-2 text-xs uppercase tracking-[0.14em] text-white transition-transform focus:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
         >
           Skip to Content
         </a>

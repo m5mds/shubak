@@ -10,6 +10,28 @@ interface PageLoadSequenceProps {
 
 const emptySubscribe = () => () => {}
 
+// Module-level cache so sessionStorage is only read once per JS session
+let _hasVisitedCache: boolean | null = null
+
+function getHasVisited(): boolean {
+  if (_hasVisitedCache !== null) return _hasVisitedCache
+  try {
+    _hasVisitedCache = sessionStorage.getItem('shubak_visited') === 'true'
+  } catch {
+    _hasVisitedCache = false
+  }
+  return _hasVisitedCache
+}
+
+function markVisited(): void {
+  _hasVisitedCache = true
+  try {
+    sessionStorage.setItem('shubak_visited', 'true')
+  } catch {
+    // sessionStorage unavailable — silently skip persistence
+  }
+}
+
 export function PageLoadSequence({ onComplete }: PageLoadSequenceProps) {
   const { dir } = useLocale()
   const [show, setShow] = useState(true)
@@ -18,7 +40,7 @@ export function PageLoadSequence({ onComplete }: PageLoadSequenceProps) {
   const borderRef = useRef<SVGRectElement>(null)
   const dotsRef = useRef<HTMLDivElement>(null)
   const isMounted = useSyncExternalStore(emptySubscribe, () => true, () => false)
-  const hasVisited = isMounted && sessionStorage.getItem('shubak_visited') === 'true'
+  const hasVisited = isMounted && getHasVisited()
 
   useEffect(() => {
     if (hasVisited) {
@@ -30,7 +52,7 @@ export function PageLoadSequence({ onComplete }: PageLoadSequenceProps) {
 
     const tl = gsap.timeline({
       onComplete: () => {
-        sessionStorage.setItem('shubak_visited', 'true')
+        markVisited()
         setShow(false)
         onComplete()
       }
@@ -105,14 +127,14 @@ export function PageLoadSequence({ onComplete }: PageLoadSequenceProps) {
     <div 
       ref={containerRef}
       data-page-load-sequence="true"
-      className="fixed inset-0 z-50 bg-[#0a0a0f] text-[#f5f0e6]"
+      className="fixed inset-0 z-[101] bg-[#0a0a0f] text-[#f5f0e6]"
     >
       <div className="flex min-h-screen w-full items-center justify-center pt-20 md:pt-24 lg:pt-28">
         <div className="flex w-full flex-col items-center justify-center px-4 md:px-6 lg:px-8">
           <div
             ref={frameRef}
             data-page-load-frame="true"
-            className="relative w-full max-w-[min(88vw,1200px)] aspect-[4/5] overflow-hidden rounded-[12px] border border-white/[0.06] bg-[#111118]/98 shadow-[0_40px_120px_rgba(0,0,0,0.55)] sm:aspect-[4/3] md:aspect-[16/10] lg:aspect-[16/9]"
+            className="relative w-full max-w-[min(88vw,1200px)] aspect-[4/5] overflow-hidden rounded-[12px] border border-white/[0.06] bg-[#111118]/98 shadow-[0_40px_120px_rgba(0,0,0,0.55)] sm:aspect-[4/3] md:aspect-[16/9] lg:aspect-[16/9]"
           >
             {/* SVG Border drawing */}
             <svg
@@ -140,7 +162,7 @@ export function PageLoadSequence({ onComplete }: PageLoadSequenceProps) {
 
             {/* Top bar with dots */}
             <div
-              className="absolute top-0 flex h-[22px] items-center border-b border-white/12 bg-white/[0.03] px-3"
+              className="absolute top-0 flex h-[22px] items-center border-b border-white/[0.12] bg-white/[0.03] px-3"
               style={{
                 insetInlineStart: 0,
                 insetInlineEnd: 0,

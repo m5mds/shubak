@@ -22,12 +22,10 @@ export const sectionRevealStates = {
   hidden: {
     opacity: 0,
     y: 24,
-    filter: 'blur(10px)',
   },
   visible: {
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
   },
 } as const
 
@@ -36,12 +34,10 @@ export const surfaceRevealStates = {
     opacity: 0,
     y: 32,
     scale: 0.985,
-    filter: 'blur(14px)',
   },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    filter: 'blur(0px)',
   },
 } as const

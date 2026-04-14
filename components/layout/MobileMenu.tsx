@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { WindowFrame } from '@/components/ui/WindowFrame'
 import { useLocale } from '@/lib/i18n/context'
 import { transitionMacro } from '@/lib/physics'
+import { revealEase } from '@/lib/motion'
 
 interface MobileMenuProps {
   open: boolean
@@ -121,15 +122,21 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
 
               <div className="flex min-h-[70vh] flex-col justify-between">
                 <div className="flex flex-col items-center gap-5 text-center">
-                  {links.map((link) => (
-                    <Link
+                  {links.map((link, i) => (
+                    <motion.div
                       key={link.href}
-                      href={link.href}
-                      onClick={onClose}
-                      className="text-[clamp(28px,9vw,40px)] tracking-tight text-white transition-colors hover:text-white/70"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.1 + i * 0.06, ease: revealEase, duration: 0.35 }}
                     >
-                      {link.label}
-                    </Link>
+                      <Link
+                        href={link.href}
+                        onClick={onClose}
+                        className="text-[clamp(28px,9vw,40px)] tracking-tight text-white transition-colors hover:text-white/70"
+                      >
+                        {link.label}
+                      </Link>
+                    </motion.div>
                   ))}
                 </div>
 

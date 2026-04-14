@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useLocale } from '@/lib/i18n/context'
 import { services, localise } from '@/lib/services-data'
 import { WindowIcon } from './window-icon'
+import { SectionReveal } from '@/components/motion/SectionReveal'
 
 export default function Footer() {
   const { dict, locale } = useLocale()
@@ -14,10 +15,11 @@ export default function Footer() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-[320px]"
         style={{
-          background: 'radial-gradient(ellipse 54% 38% at 50% 0%, rgba(255,255,255,0.05) 0%, transparent 72%)',
+          background: 'radial-gradient(ellipse 54% 38% at 50% 0%, rgba(255,255,255,0.12) 0%, transparent 72%)',
         }}
       />
       <div className="relative z-10 mx-auto max-w-7xl px-5 pb-12 pt-24 lg:px-12 lg:pt-32">
+        <SectionReveal>
         <div className="mb-20 grid grid-cols-1 gap-12 text-white/50 md:grid-cols-2 lg:grid-cols-4 lg:gap-8">
           <div>
             <Link href="/" className="mb-6 inline-flex items-center gap-3 text-white transition-colors hover:text-white/80">
@@ -38,7 +40,7 @@ export default function Footer() {
             <ul className="space-y-4">
               {services.map((service) => (
                 <li key={service.slug}>
-                  <Link href={`/services/${service.slug}`} className="text-[12px] text-white/40 transition-colors hover:text-white">
+                  <Link href={`/services/${service.slug}`} className="relative text-[12px] text-white/40 transition-colors hover:text-white after:absolute after:bottom-0 after:start-0 after:h-px after:w-full after:origin-start after:scale-x-0 after:bg-white/30 after:transition-transform after:duration-300 hover:after:scale-x-100">
                     {localise(service.title, locale)}
                   </Link>
                 </li>
@@ -52,17 +54,17 @@ export default function Footer() {
             </h4>
             <ul className="space-y-4">
               <li>
-                <Link href="/#about" className="text-[12px] text-white/40 transition-colors hover:text-white">
+                <Link href="/#about" className="relative text-[12px] text-white/40 transition-colors hover:text-white after:absolute after:bottom-0 after:start-0 after:h-px after:w-full after:origin-start after:scale-x-0 after:bg-white/30 after:transition-transform after:duration-300 hover:after:scale-x-100">
                   {dict.footer.aboutLink}
                 </Link>
               </li>
               <li>
-                <Link href="/#process" className="text-[12px] text-white/40 transition-colors hover:text-white">
+                <Link href="/#process" className="relative text-[12px] text-white/40 transition-colors hover:text-white after:absolute after:bottom-0 after:start-0 after:h-px after:w-full after:origin-start after:scale-x-0 after:bg-white/30 after:transition-transform after:duration-300 hover:after:scale-x-100">
                   {dict.process.sectionTag}
                 </Link>
               </li>
               <li>
-                <Link href="/#contact" className="text-[12px] text-white/40 transition-colors hover:text-white">
+                <Link href="/#contact" className="relative text-[12px] text-white/40 transition-colors hover:text-white after:absolute after:bottom-0 after:start-0 after:h-px after:w-full after:origin-start after:scale-x-0 after:bg-white/30 after:transition-transform after:duration-300 hover:after:scale-x-100">
                   {dict.footer.contactLink}
                 </Link>
               </li>
@@ -75,19 +77,21 @@ export default function Footer() {
             </h4>
             <ul className="space-y-4">
               {dict.footer.connectItems.map((item) => (
-                <li key={item} className="text-[12px] text-white/40">
-                  {item.includes('@') ? (
-                    <a href={`mailto:${item}`} className="transition-colors hover:text-white">
-                      {item}
-                    </a>
-                  ) : (
-                    <span>{item}</span>
-                  )}
+                <li key={item.label}>
+                  <a
+                    href={item.href}
+                    target={item.href.startsWith('mailto:') ? undefined : '_blank'}
+                    rel={item.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
+                    className="relative text-[12px] text-white/40 transition-colors hover:text-white after:absolute after:bottom-0 after:start-0 after:h-px after:w-full after:origin-start after:scale-x-0 after:bg-white/30 after:transition-transform after:duration-300 hover:after:scale-x-100"
+                  >
+                    {item.label}
+                  </a>
                 </li>
               ))}
             </ul>
           </div>
         </div>
+        </SectionReveal>
 
         <div className="border-t border-white/[0.04] pt-8">
           <p className="text-[10px] uppercase tracking-widest text-white/45">{dict.footer.copyright}</p>

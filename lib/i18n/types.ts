@@ -8,7 +8,6 @@ export interface Dictionary {
     brand: string;
     services: string;
     about: string;
-    work: string;
     contact: string;
     startProject: string;
     openMenu: string;
@@ -106,6 +105,6 @@ export interface Dictionary {
     copyright: string;
     location: string;
     global: string;
-    connectItems: string[];
+    connectItems: Array<{ label: string; href: string }>;
   };
 }

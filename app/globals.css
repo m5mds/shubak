@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 /* ─── CSS variables ─────────────────────────────────────────────────────── */
+/* G6 NOTE: WindowFrame hover glow is defined inline in components/ui/WindowFrame.tsx.
+   Target: increase from `0 0 40px rgba(255,255,255,0.02)` → `0 0 60px rgba(255,255,255,0.04)`.
+   Edit WindowFrame.tsx to apply this change. */
 :root {
   --font-mono: ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
   --border: rgba(255, 255, 255, 0.06);
@@ -164,17 +167,17 @@ main [id] {
 
 .homepage-shell::before {
   background:
-    radial-gradient(44% 24% at 50% 6%, rgba(120, 170, 255, 0.08) 0%, transparent 72%),
-    radial-gradient(30% 24% at 82% 38%, rgba(255, 255, 255, 0.045) 0%, transparent 78%),
-    radial-gradient(28% 18% at 16% 64%, rgba(255, 226, 183, 0.04) 0%, transparent 80%);
+    radial-gradient(44% 24% at 50% 6%, rgba(120, 170, 255, 0.20) 0%, transparent 72%),
+    radial-gradient(30% 24% at 82% 38%, rgba(255, 255, 255, 0.11) 0%, transparent 78%),
+    radial-gradient(28% 18% at 16% 64%, rgba(255, 226, 183, 0.11) 0%, transparent 80%);
   animation: ambient-glow 6s ease-in-out infinite;
 }
 
 .homepage-shell::after {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.018) 0%, rgba(255, 255, 255, 0) 22%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0) 44%, rgba(255, 255, 255, 0.016) 58%, rgba(255, 255, 255, 0) 100%);
-  opacity: 0.72;
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 22%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0) 44%, rgba(255, 255, 255, 0.04) 58%, rgba(255, 255, 255, 0) 100%);
+  opacity: 0.85;
 }
 
 .homepage-shell > *:not([data-page-load-sequence='true']) {
@@ -210,24 +213,24 @@ main [id] {
 
 .homepage-seam--hero-services::after {
   background:
-    radial-gradient(circle at 50% 48%, rgba(120, 170, 255, 0.14) 0%, rgba(255, 255, 255, 0.05) 34%, transparent 72%);
+    radial-gradient(circle at 50% 48%, rgba(120, 170, 255, 0.30) 0%, rgba(255, 255, 255, 0.12) 34%, transparent 72%);
 }
 
 .homepage-seam--services-about::after {
   background:
-    radial-gradient(circle at 28% 54%, rgba(255, 255, 255, 0.08) 0%, transparent 48%),
-    radial-gradient(circle at 74% 50%, rgba(120, 170, 255, 0.1) 0%, transparent 50%);
+    radial-gradient(circle at 28% 54%, rgba(255, 255, 255, 0.18) 0%, transparent 48%),
+    radial-gradient(circle at 74% 50%, rgba(120, 170, 255, 0.22) 0%, transparent 50%);
 }
 
 .homepage-seam--about-process::after {
   background:
-    radial-gradient(circle at 38% 50%, rgba(255, 226, 183, 0.08) 0%, transparent 52%),
-    radial-gradient(circle at 72% 46%, rgba(255, 255, 255, 0.06) 0%, transparent 48%);
+    radial-gradient(circle at 38% 50%, rgba(255, 226, 183, 0.18) 0%, transparent 52%),
+    radial-gradient(circle at 72% 46%, rgba(255, 255, 255, 0.14) 0%, transparent 48%);
 }
 
 .homepage-seam--process-cta::after {
   background:
-    radial-gradient(circle at 50% 50%, rgba(120, 170, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 36%, transparent 72%);
+    radial-gradient(circle at 50% 50%, rgba(120, 170, 255, 0.26) 0%, rgba(255, 255, 255, 0.10) 36%, transparent 72%);
 }
 
 .homepage-section {
@@ -247,65 +250,65 @@ main [id] {
 .homepage-section::before {
   top: 0;
   height: clamp(140px, 18vw, 240px);
-  background: var(--section-top-atmosphere, linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 82%));
-  opacity: 0.92;
+  background: var(--section-top-atmosphere, linear-gradient(180deg, rgba(255, 255, 255, 0.10), transparent 82%));
+  opacity: 1;
 }
 
 .homepage-section::after {
   bottom: 0;
   height: clamp(148px, 20vw, 260px);
-  background: var(--section-bottom-atmosphere, linear-gradient(0deg, rgba(255, 255, 255, 0.04), transparent 82%));
-  opacity: 0.88;
+  background: var(--section-bottom-atmosphere, linear-gradient(0deg, rgba(255, 255, 255, 0.10), transparent 82%));
+  opacity: 1;
 }
 
 .homepage-section--services {
   --section-top-atmosphere:
-    radial-gradient(54% 70% at 50% 0%, rgba(120, 170, 255, 0.11) 0%, rgba(255, 255, 255, 0.02) 42%, transparent 76%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 82%);
+    radial-gradient(54% 70% at 50% 0%, rgba(120, 170, 255, 0.22) 0%, rgba(255, 255, 255, 0.05) 42%, transparent 76%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 82%);
   --section-bottom-atmosphere:
-    radial-gradient(48% 65% at 18% 100%, rgba(255, 255, 255, 0.06) 0%, transparent 74%),
-    linear-gradient(0deg, rgba(255, 255, 255, 0.03), transparent 82%);
+    radial-gradient(48% 65% at 18% 100%, rgba(255, 255, 255, 0.12) 0%, transparent 74%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.06), transparent 82%);
 }
 
 .homepage-section--about {
   --section-top-atmosphere:
-    radial-gradient(50% 74% at 18% 0%, rgba(255, 255, 255, 0.08) 0%, transparent 76%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 82%);
+    radial-gradient(50% 74% at 18% 0%, rgba(255, 255, 255, 0.18) 0%, transparent 76%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 82%);
   --section-bottom-atmosphere:
-    radial-gradient(44% 72% at 78% 100%, rgba(255, 226, 183, 0.06) 0%, transparent 76%),
-    linear-gradient(0deg, rgba(255, 255, 255, 0.028), transparent 82%);
+    radial-gradient(44% 72% at 78% 100%, rgba(255, 226, 183, 0.14) 0%, transparent 76%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.06), transparent 82%);
 }
 
 .homepage-section--process {
   --section-top-atmosphere:
-    radial-gradient(50% 70% at 72% 0%, rgba(120, 170, 255, 0.08) 0%, transparent 76%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 82%);
+    radial-gradient(50% 70% at 72% 0%, rgba(120, 170, 255, 0.18) 0%, transparent 76%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 82%);
   --section-bottom-atmosphere:
-    radial-gradient(52% 72% at 50% 100%, rgba(255, 255, 255, 0.05) 0%, transparent 78%),
-    linear-gradient(0deg, rgba(255, 255, 255, 0.028), transparent 82%);
+    radial-gradient(52% 72% at 50% 100%, rgba(255, 255, 255, 0.11) 0%, transparent 78%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.06), transparent 82%);
 }
 
 .homepage-section--cta {
   --section-top-atmosphere:
-    radial-gradient(56% 82% at 50% 0%, rgba(120, 170, 255, 0.1) 0%, rgba(255, 255, 255, 0.025) 40%, transparent 76%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.045), transparent 82%);
+    radial-gradient(56% 82% at 50% 0%, rgba(120, 170, 255, 0.22) 0%, rgba(255, 255, 255, 0.06) 40%, transparent 76%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.09), transparent 82%);
   --section-bottom-atmosphere:
-    radial-gradient(42% 70% at 50% 100%, rgba(255, 255, 255, 0.05) 0%, transparent 78%),
-    linear-gradient(0deg, rgba(255, 255, 255, 0.03), transparent 82%);
+    radial-gradient(42% 70% at 50% 100%, rgba(255, 255, 255, 0.11) 0%, transparent 78%),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.06), transparent 82%);
 }
 
 /* ─── Spotlight grid hover effect (About section 2x2 window panes) ────────── */
 @media (hover: hover) {
   .spotlight-grid:hover .spotlight-pane {
-    opacity: 0.4;
-    transform: scale(0.98);
+    opacity: 0.30;
+    transform: none;
   }
   .spotlight-grid:hover .spotlight-pane:hover {
     opacity: 1 !important;
-    transform: scale(1.05) !important;
+    transform: none !important;
     z-index: 10;
     position: relative;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    background: #111118 !important;
   }
 }
 

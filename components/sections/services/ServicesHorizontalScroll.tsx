@@ -93,7 +93,7 @@ export function ServicesHorizontalScroll() {
     const st = ScrollTrigger.create({
       trigger: wrapperRef.current,
       start: 'top top',
-      end: () => `+=${getScrollAmount() * 0.8}`,
+      end: () => `+=${getScrollAmount()}`,
       pin: true,
       animation: tween,
       scrub: 1.5,
@@ -120,7 +120,7 @@ export function ServicesHorizontalScroll() {
 
       gsap.fromTo(
         panelContent,
-        { z: -80, opacity: 0.6 },
+        { z: -120, opacity: 0.5 },
         {
           z: 0,
           opacity: 1,
@@ -135,8 +135,8 @@ export function ServicesHorizontalScroll() {
         }
       )
       gsap.to(panelContent, {
-        z: -40,
-        opacity: 0.7,
+        z: -120,
+        opacity: 0.5,
         ease: 'none',
         scrollTrigger: {
           trigger: panel,
@@ -188,7 +188,7 @@ export function ServicesHorizontalScroll() {
             <div className="relative h-px w-full overflow-hidden bg-white/10">
               <div
                 ref={progressRef}
-                className={cn('absolute top-0 bottom-0 h-full w-0 bg-white', isRTL ? 'end-0' : 'start-0')}
+                className={cn('absolute top-0 bottom-0 h-full w-0 bg-white shadow-[0_0_8px_rgba(255,255,255,0.2)]', isRTL ? 'end-0' : 'start-0')}
               />
             </div>
           </div>

@@ -8,7 +8,6 @@ export const ar: Dictionary = {
     brand: 'شباك',
     services: 'خدماتنا',
     about: 'من نحن',
-    work: 'أعمالنا',
     contact: 'تواصل معنا',
     startProject: 'ابدأ مشروعك',
     openMenu: 'فتح القائمة',
@@ -191,6 +190,11 @@ export const ar: Dictionary = {
     copyright: '© 2026 شباك. جميع الحقوق محفوظة.',
     location: 'الرياض، المملكة العربية السعودية',
     global: 'نخدم عملاء حول العالم',
-    connectItems: ['hello@shubak.ai', 'Twitter/X', 'LinkedIn', 'GitHub'],
+    connectItems: [
+      { label: 'hello@shubak.ai', href: 'mailto:hello@shubak.ai' },
+      { label: 'Twitter / X', href: 'https://x.com/shubak_ai' },
+      { label: 'LinkedIn', href: 'https://linkedin.com/company/shubak-ai' },
+      { label: 'GitHub', href: 'https://github.com/shubak-ai' },
+    ],
   },
 };

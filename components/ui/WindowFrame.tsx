@@ -25,13 +25,13 @@ export function WindowFrame({
   return (
     <div
       className={cn(
-        'group/window relative overflow-hidden rounded-[12px] border border-white/[0.06] transition-all duration-300 ease-out hover:border-white/[0.12]',
+        'group/window relative overflow-hidden rounded-[12px] border border-white/[0.09] transition-all duration-300 ease-out hover:border-white/[0.18]',
         isGlass
           ? 'bg-[#111118]/70 backdrop-blur-[12px]'
           : isMinimal
             ? 'bg-transparent'
             : 'bg-[#111118]',
-        !isMinimal && 'hover:scale-[1.003] hover:shadow-[0_0_40px_rgba(255,255,255,0.02)]',
+        !isMinimal && 'hover:scale-[1.003] hover:shadow-[0_0_60px_rgba(255,255,255,0.04)] transition-shadow',
         className
       )}
     >
@@ -39,14 +39,14 @@ export function WindowFrame({
         <div
           className={cn(
             'flex h-[22px] items-center border-b px-3',
-            isGlass ? 'border-white/[0.08] bg-white/[0.04]' : 'border-white/[0.06] bg-white/[0.03]',
+            isGlass ? 'border-white/[0.12] bg-white/[0.05]' : 'border-white/[0.09] bg-white/[0.04]',
             dir === 'rtl' ? 'justify-end' : 'justify-start'
           )}
         >
-          <div className="flex items-center gap-1.5">
-            <div className="h-[6px] w-[6px] rounded-full bg-white/15 transition-colors duration-300 group-hover/window:bg-white/30" />
-            <div className="h-[6px] w-[6px] rounded-full bg-white/15 transition-colors duration-300 group-hover/window:bg-white/30" />
-            <div className="h-[6px] w-[6px] rounded-full bg-white/15 transition-colors duration-300 group-hover/window:bg-white/30" />
+          <div aria-hidden="true" className="flex items-center gap-1.5">
+            <div className="h-[6px] w-[6px] rounded-full bg-white/25 transition-colors duration-300 group-hover/window:bg-white/45" />
+            <div className="h-[6px] w-[6px] rounded-full bg-white/25 transition-colors duration-300 group-hover/window:bg-white/45" />
+            <div className="h-[6px] w-[6px] rounded-full bg-white/25 transition-colors duration-300 group-hover/window:bg-white/45" />
           </div>
         </div>
       )}
